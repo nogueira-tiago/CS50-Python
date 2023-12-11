@@ -15,7 +15,7 @@ def main():
     while True:
         try:
             fraction = input("Fraction: ")
-            print(f"{calculate_percentage(fraction)}")
+            print(f"{calculate_percentage(fraction)}%")
             break
         except ValueError:
             print("This isn't a number, try again.")
