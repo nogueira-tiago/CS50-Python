@@ -5,16 +5,19 @@ import os
 def convert_csv(input_file, output_file):
     try:
         with open(input_file, "r") as input_csv, open(output_file, "w", newline="") as output_csv:
-            reader =csv.reader(input_csv)
-            writer = csv.writer(output_csv)
+            reader =csv.DictReader(input_csv)
+            fieldnames = ["first_name","last_name","house"]
+            writer = csv.DictWriter(output_csv, fieldnames=fieldnames)
+
+            writer.writeheader()
         
             for row in reader:
                 if len(row) !=2:
                     print("Usage: python scourgify.py <filename.csv> <outputfile.csv>")
                     sys.exit(1)
 
-                full_name = row[0].strip('"')
-                house = row[1]
+                full_name = row["name"].strip('"')
+                house = row["house"]
 
                 name_parts = full_name.split(',')
                 if len(name_parts) != 2:
@@ -23,7 +26,7 @@ def convert_csv(input_file, output_file):
                 
                 first_name, last_name = name_parts
 
-                writer.writerow([first_name.strip(),last_name.strip(),house.strip()])
+                writer.writerow({"first_name":first_name.strip(),"last_name":last_name.strip(),"house":house.strip()})
     
     except FileNotFoundError:
         print("Usage: python program.py <input_file.csv> <output_file.csv>")
