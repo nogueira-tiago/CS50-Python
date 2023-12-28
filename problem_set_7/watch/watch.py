@@ -2,15 +2,21 @@ import re
 
 def main():
     link = input("HTML: ")
-    print(parse(link))
+    result = parse(link)
+
+    if result:
+        print(result)
+    else:
+        print("Error")
 
 def parse(str):
-    link_pattern = re.search(r"^http(S)?://(www.)?youtube(\.com/.+)/(.+)", str)
+    pattern = r'src="https?://(?:www\.)?youtube\.com/embed/([^"]+)"'
+    link_pattern = re.search(pattern, str)
     if link_pattern:
-        grp1, grp2, grp3, grp4 = link_pattern.groups()
-        final_link = f"http{grp1}://{grp2}youtu.be/{grp4}"
-        return final_link
-    return False
+        video_id = link_pattern.group(1)
+        return f'https://youtu.be/{video_id}'
+    
+    return None
 
 if __name__ == "__main__":
     main()
